@@ -39,16 +39,19 @@ namespace bnk
 
 				return bc;
 			}
-
+			
 			void display(bank_column bc){
-				std::cout <<"-----------USER DATA-----------"<< std::endl;
-				std::cout <<"Acc name    : "<< name << std::endl;
-				std::cout <<"Acc number  : "<< acc_no << std::endl;
-				std::cout <<"Acc type    : "<< type << std::endl;
-				std::cout <<"Acc balance : "<< balance << std::endl;
+				//std::cout <<"-----------USER DATA-----------"<< std::endl;
 				std::cout <<"-------------------------------"<< std::endl;
+				std::cout <<"Acc name    : "<< bc.name << std::endl;
+				std::cout <<"Acc number  : "<< bc.acc_no << std::endl;
+				std::cout <<"Acc balance : "<< bc.balance << std::endl;
+				if(bc.type == acc_type::saving)
+					std::cout <<"Acc type    : Saving\n";
+				else
+					std::cout <<"Acc type    : Current\n";
 			}
-
+			
 			void create_acc() {
 				std::cout <<"create account\n";
 				bank_column acc;
@@ -98,9 +101,24 @@ namespace bnk
 				std::cout <<"Enter acc number : ";
 				std::cin >> number;
 			}
-			void display_all_acc() {
-				std::cout <<"Display all acc\n";
+			void display_all_acc() {	
+				bank_column bc;
 				
+				std::ifstream file("bank.dat",std::ios::binary);
+
+				std::cout <<"----------ALL ACCOUNTS---------\n";
+				while(file.read((char*)&bc,sizeof(bc))){
+					/*std::cout <<"Acc No   : "<<bc.acc_no << std::endl;;
+					std::cout <<"Name     : "<<bc.name << std::endl;;
+					std::cout <<"Balance  : "<<bc.balance << std::endl;;
+					if(bc.type == acc_type::saving)
+						std::cout <<"Acc type : Saving\n";
+					else
+						std::cout <<"Acc type : Current\n";*/
+					display(bc);
+				}
+				
+				file.close();
 			}
 	};
 
