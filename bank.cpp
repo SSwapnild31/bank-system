@@ -1,6 +1,7 @@
 #include<iostream>
 #include<string>
 #include<limits>
+#include<fstream>
 
 namespace bnk
 {
@@ -22,9 +23,34 @@ namespace bnk
 
 	class admin : public bank_op
 	{
-		public:
-			bank_column read_data() {
-				std::cout <<"insert data\n";
+		public:	
+			void write_data(bank_column bc){
+				std::ofstream file("bank.dat",std::ios::binary | std::ios::app);
+				file.write((char*)&bc, sizeof(bc));
+				file.close();
+			}
+			
+			bank_column read_data(){
+				bank_column bc;
+				
+				std::ifstream file("bank.dat",std::ios::binary);
+				file.read((char*)&bc, sizeof(bc));
+				file.close();
+
+				return bc;
+			}
+
+			void display(bank_column bc){
+				std::cout <<"-----------USER DATA-----------"<< std::endl;
+				std::cout <<"Acc name    : "<< name << std::endl;
+				std::cout <<"Acc number  : "<< acc_no << std::endl;
+				std::cout <<"Acc type    : "<< type << std::endl;
+				std::cout <<"Acc balance : "<< balance << std::endl;
+				std::cout <<"-------------------------------"<< std::endl;
+			}
+
+			void create_acc() {
+				std::cout <<"create account\n";
 				bank_column acc;
 
 				std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
@@ -42,28 +68,9 @@ namespace bnk
 					acc.type = acc_type::saving;
 				else	
 					acc.type = acc_type::current;
+				
+				write_data(acc);
 
-				return acc;
-			}
-			
-			void write_data(bank_column bc){
-				std::fstream fo("bank.txt",std::ios::out | std::ios::app);
-				fo.write((char*)&bc, sizeof(bc));
-				fo.close();
-			}
-
-			/*void display(){
-				std::cout <<"-----------USER DATA-----------"<< std::endl;
-				std::cout <<"Acc name    : "<< name << std::endl;
-				std::cout <<"Acc number  : "<< acc_no << std::endl;
-				std::cout <<"Acc type    : "<< type << std::endl;
-				std::cout <<"Acc balance : "<< balance << std::endl;
-				std::cout <<"-------------------------------"<< std::endl;
-			}*/
-
-			void create_acc() {
-				std::cout <<"create acc, ";
-				read_data();
 				std::cout <<"Account created successfully\n";
 			}
 			void delete_acc() {
