@@ -93,6 +93,7 @@ namespace bnk
 			}
 			void check_balance() override {
 				std::cout <<"check balance\n";
+
 			}
 			void search_acc() override {
 				std::cout <<"Search acc\n";
@@ -126,7 +127,16 @@ namespace bnk
 	{
 		public: 
 			void send_money() {
-				
+				std::cout <<"---------TRANSFER MONEY--------\n";
+				long int acn1, acn2, bal;
+
+				cout <<"Enter Sender Acc no   : ";
+				cin >> acn1;
+				cout <<"Enter Receiver Acc no : ";
+				cin >> acn2;
+				cout <<"Enter Amount to send  : ";
+				cin >> bal;
+				std::cout <<"-------------------------------\n";	
 			}
 			void deposit_money() {
 				
