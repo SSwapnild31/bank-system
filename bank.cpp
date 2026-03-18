@@ -139,7 +139,16 @@ namespace bnk
 				std::cout <<"-------------------------------\n";	
 			}
 			void deposit_money() {
-				
+				std::cout <<"----------DEPOSIT MONEY--------\n";
+				long int acn1, acn2, bal;
+
+				std::cout <<"Enter Sender Acc no   : ";
+				std::cin >> acn1;
+				std::cout <<"Enter Receiver Acc no : ";
+				std::cin >> acn2;
+				std::cout <<"Enter Amount to send  : ";
+				std::cin >> bal;
+				std::cout <<"-------------------------------\n";		
 			}
 			void check_balance() override {
 				
@@ -153,45 +162,70 @@ namespace bnk
 int main()
 {
 	bnk::admin adm;
-	//bnk::user usr;
+	bnk::user usr;
 
 	std::cout <<"-------------------------------"<< std::endl;
 	std::cout <<"            WELCOME            "<< std::endl;
-	
-	while(true){
-		int op;
+
+
+	while(true){	
+		int ch;
 		std::cout <<"-------------------------------"<< std::endl;
-		std::cout <<"1.Create Acc\t2.Update Acc\n3.Search Acc\t4.Delete Acc\n5.Display all\t6.Exit\n";
+		std::cout <<" 1.ADMIN  2.USER  3.EXIT\n";
 		std::cout <<"-------------------------------"<< std::endl;
-		std::cout <<"Enter option : ";
-		std::cin >> op;
-		std::cout <<"-------------------------------"<< std::endl;
-		
-		switch(op)
-		{
-			case 1 : adm.create_acc();	break;
-			case 2 : adm.update_acc();	break;
-			case 3 : adm.search_acc();	break;
-			case 4 : adm.delete_acc();	break;
-			case 5 : adm.display_all_acc();	break;
-			case 6 : exit(0);
-			default: std::cout <<"  wrong option! Enter again!\n";
+		std::cout <<" Enter option : ";
+		std::cin >> ch;
+
+		switch(ch){
+			case 1 :
+				while(true){
+					int op;
+					std::cout <<"-------------------------------"<< std::endl;
+					std::cout <<" 1.Create Acc\t2.Update Acc\n 3.Search Acc\t4.Delete Acc\n 5.Display all\t6.Main menu\n";
+					std::cout <<"-------------------------------"<< std::endl;
+					std::cout <<" Enter option : ";
+					std::cin >> op;
+					std::cout <<"-------------------------------"<< std::endl;
+
+					if(op == 6) break;
+
+					switch(op)
+					{
+						case 1 : adm.create_acc();	break;
+						case 2 : adm.update_acc();	break;
+						case 3 : adm.search_acc();	break;
+						case 4 : adm.delete_acc();	break;
+						case 5 : adm.display_all_acc();	break;
+						default: std::cout <<" wrong option! Enter again!\n";
+					}
+				}	
+				break;
+			case 2 :
+				while(true){
+					int op;
+					std::cout <<"-------------------------------"<< std::endl;
+					std::cout <<" 1.Search Acc\t2.Check bal\n 3.Send money\t4.Deposit money\n 5.Main menu\n";
+					std::cout <<"-------------------------------"<< std::endl;
+					std::cout <<" Enter option : ";
+					std::cin >> op;
+					std::cout <<"-------------------------------"<< std::endl;
+
+					if(op == 5) break;
+
+					switch(op){
+						case 1 : usr.search_acc();	break;
+						case 2 : usr.check_balance();	break;
+						case 3 : usr.send_money();	break;
+						case 4 : usr.deposit_money();	break;
+						default: std::cout <<" wrong option! Enter again";
+					}
+				}
+				break;
+			case 3 : exit(0);
+			default: std::cout <<" wrong option! Enter again!\n";
 		}
 	}
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
