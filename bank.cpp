@@ -1,5 +1,5 @@
 #include<iostream>
-#include<string>
+#include<cstring>
 #include<limits>
 #include<fstream>
 
@@ -13,7 +13,7 @@ namespace bnk
 		double balance;
 		acc_type type;
 	};
-
+	
 	class bank_op{
 		public:
 			virtual void search_acc() = 0;
@@ -24,7 +24,30 @@ namespace bnk
 
 	class admin : public bank_op
 	{
+		private:
+			char m_user[50];
+			char m_pass[50];
 		public:	
+			bool login_admin(){
+				char user[50];
+				char pass[50];
+
+				std::cout <<" Enter Username : ";
+				std::cin >> user;
+
+				std::cout <<" Enter Password : ";
+				std::cin >> pass;	
+				
+				std::ifstream file("pass",std::ios::binary);
+				file.read((char*)&m_user, sizeof(m_user));
+				file.read((char*)&m_pass, sizeof(m_pass));
+				file.close();
+				
+				if(strcmp(m_user, user) == 0  && strcmp(m_pass, pass) == 0){
+					return true;
+				}
+				return false;
+			}
 			void write_data(bank_column bc){
 				std::ofstream file("bank.dat",std::ios::binary | std::ios::app);
 				file.write((char*)&bc, sizeof(bc));
@@ -126,7 +149,7 @@ namespace bnk
 				std::cout <<" Acc not present/wrong number!\n";
 			}
 			
-			void display_all_acc() {	
+			void display_records() {	
 				bank_column bc;
 				
 				std::ifstream file("bank.dat",std::ios::binary);
@@ -138,6 +161,20 @@ namespace bnk
 				}
 				
 				file.close();
+			}
+
+			int record_count(){
+				
+				int count = 0;
+				bank_column bc;
+
+				std::ifstream file("bank.dat",std::ios::binary);					
+				while(file.read((char*)&bc,sizeof(bc))){
+					count++;
+				}
+				file.close();
+
+				return count;
 			}
 
 			void display(bank_column bc){
@@ -243,67 +280,81 @@ int main()
 	bnk::admin adm;
 	bnk::user usr;
 
-	std::cout <<"-------------------------------"<< std::endl;
-	std::cout <<"          | WELCOME |          "<< std::endl;
-	std::cout <<"-------------------------------"<< std::endl;
+	std::cout <<"-------------------------------\n";
+	std::cout <<"          | WELCOME |          \n";
+	std::cout <<"-------------------------------\n";
 
 
 	while(true){	
-		int ch;
+		int ch, atempt = 0;
 		std::cout <<"    1.Admin  2.User  3.Exit\n";
-		std::cout <<"-------------------------------"<< std::endl;
+		std::cout <<"-------------------------------\n";
 		std::cout <<" Enter option : ";
 		std::cin >> ch;
 
 		switch(ch){
 			case 1 :
-				while(true){
-					int op;
-					std::cout <<"-------------------------------"<< std::endl;
-					std::cout <<" 1.Create Record\t2.Update Record\n 3.Search Record\t4.Delete Record\n 5.Check balalance\t6.Display Records\n 7.Main menu\n";
-					std::cout <<"-------------------------------"<< std::endl;
-					std::cout <<" Enter option : ";
-					std::cin >> op;
-					std::cout <<"-------------------------------"<< std::endl;
+				login:
+				if(adm.login_admin()){
+					std::cout <<"-------------------------------\n";
+					std::cout <<"           Logged In           \n";
+					while(true){
+						
+						int op, c;
+						std::cout <<"-------------------------------\n";
+						std::cout <<" 1.Create Record\t2.Update Record\n 3.Search Record\t4.Delete Record\n 5.Check balalance\t6.Display Records\n 7.Record count\t8.Main menu\n";
+						std::cout <<"-------------------------------\n";
+						std::cout <<" Enter option : ";
+						std::cin >> op;
+						std::cout <<"-------------------------------\n";
 
-					if(op == 7) break;
+						if(op == 8) break;
 
-					switch(op){
-						case 1 : adm.create_acc();	break;
-						case 2 : adm.update_acc();	break;
-						case 3 : adm.search_acc();	break;
-						case 4 : adm.delete_acc();	break;
-						case 5 : adm.check_balance();	break;
-						case 6 : adm.display_all_acc();	break;
-						default: std::cout <<" wrong option! Enter again!\n";
-					}
-				}	
+						switch(op){
+							case 1 : adm.create_acc();		break;
+							case 2 : adm.update_acc();		break;
+							case 3 : adm.search_acc();		break;
+							case 4 : adm.delete_acc();		break;
+							case 5 : adm.check_balance();	break;
+							case 6 : adm.display_records();	break;
+							case 7 : c = adm.record_count();
+									 std::cout <<" Total records : "<< c << std::endl;	break;
+							default: std::cout <<" wrong option! Enter again!\n";
+						}
+					}	
+				}
+				else{
+						std::cout <<" wrong username/password!\n\n";
+						atempt++;
+						if(atempt < 3)
+							goto login;
+				}
 				break;
 			case 2 :
 				while(true){
 					int op;
-					std::cout <<"-------------------------------"<< std::endl;
+					std::cout <<"-------------------------------\n";
 					std::cout <<" 1.Search Acc\t2.Check bal\n 3.Send money\t4.Deposit money\n 5.Main menu\n";
-					std::cout <<"-------------------------------"<< std::endl;
+					std::cout <<"-------------------------------\n";
 					std::cout <<" Enter option : ";
 					std::cin >> op;
-					std::cout <<"-------------------------------"<< std::endl;
+					std::cout <<"-------------------------------\n";
 					
 					if(op == 5) break;
 					
 					switch(op){
-						case 1 : usr.search_acc();	break;
+						case 1 : usr.search_acc();		break;
 						case 2 : usr.check_balance();	break;
-						case 3 : usr.send_money();	break;
+						case 3 : usr.send_money();		break;
 						case 4 : usr.deposit_money();	break;
 						default: std::cout <<" wrong option! Enter again\n";
 					}
 				}
 				break;
 			case 3 : 
-				 std::cout <<"-------------------------------"<< std::endl;
-				 std::cout <<"         | THANK YOU |         "<< std::endl;
-				 std::cout <<"-------------------------------"<< std::endl;
+				 std::cout <<"-------------------------------\n";
+				 std::cout <<"         | THANK YOU |         \n";
+				 std::cout <<"-------------------------------\n";
 				 exit(0);
 			default: std::cout <<" wrong option! Enter again!\n";
 		}
