@@ -52,6 +52,62 @@
         ```bash
         ./bank
         ```
+   3. If you select option as Admin, Then first time need to set up username and password.
+      ```bash
+            -------------------------------
+                      | WELCOME |
+            -------------------------------
+                1.Admin  2.User  3.Exit
+            -------------------------------
+             Enter option : 1
+            -------------------------------
+             Set username & password
+             Enter Username : Admin
+             Enter Password : Pass@123
+             Details saved successfully
+            -------------------------------
+             Enter Admin details to login
+            -------------------------------
+             Enter Username : Admin
+             Enter Password : Pass@123
+            -------------------------------
+                       Logged In
+            -------------------------------
+             1.Create Acc   2.Update Acc
+             3.Search Acc   4.Delete Acc
+             5.Check bal    6.Display Accs
+             7.Count Accs   8.Main menu
+            -------------------------------
+             Enter option : 
+      ```
+   5. Then using that Login credentials you can login as Admin.
+   6. You will get only 3 attempts to Enter correct credentials and If you fail then program terminates with an warning message.
+        ```bash
+            -------------------------------
+                      | WELCOME |
+            -------------------------------
+                1.Admin  2.User  3.Exit
+            -------------------------------
+             Enter option : 1
+             Enter Username : Admin
+             Enter Password : ad
+             wrong username/password!
+            -------------------------------
+             Enter Username : Admin
+             Enter Password : Pass21
+             wrong username/password!
+             Warning: Last attempt remaining!
+            -------------------------------
+             Enter Username : Admi 
+             Enter Password : Pass@123
+             wrong username/password!
+            -------------------------------
+			Access blocked : 
+			     Too many failed attempts! 
+			-------------------------------
+        ```
+   7. For user, It won't necessary now. May be in future you can see that feature for user as well.
+        
 ## 💾 File Handling
 + `data.dat` → Stores account details
 + `pass.dat` → Stores admin username & password
@@ -67,9 +123,7 @@
 ## 🔐 Admin Authentication
 + Admin credentials are stored in a binary file (`pass.dat`)
 + Uses istream in binary mode for reading credentials
-+ Login verifies:
-    + Username : `Admin`
-    + Password : `Admin@123`
++ If you are login first time, then you have to set username and password for admin.
 
 ## 🚀 Future Enhancements
 + Encrypt passwords (hashing)
